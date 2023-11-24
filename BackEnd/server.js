@@ -3,7 +3,6 @@ const app = express()
 const port = 4000
 const cors = require('cors');
 
-
 app.use(cors());
 app.use(function(req, res, next) {
 res.header("Access-Control-Allow-Origin", "*");
@@ -39,6 +38,13 @@ const bookSchema = new mongoose.Schema({
 
 //Used for using .bookScheme to do work
 const bookModel = new mongoose.model('books', bookSchema);
+
+app.put('/api/book/:id', async(req, res)=>{
+  console.log("Update: "+req.params.id);
+  
+  let book = await bookModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
+  res.send(book);
+})
 
 app.post('/api/book', (req,res)=>{
     console.log(req.body);
